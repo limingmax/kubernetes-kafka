@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zk-n1
+  name: zk-n1
+  namespace: default
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    targetPort: 2181
+    nodePort: 30201
+    name: client
+  - port: 2888
+    protocol: TCP
+    targetPort: 2888
+    name: leader
+  - port: 3888
+    protocol: TCP
+    targetPort: 3888
+    name: leader-election
+  selector:
+    app: zk-n1
+  sessionAffinity: None
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zk-n2
+  name: zk-n2
+  namespace: default
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    targetPort: 2181
+    nodePort: 30202
+    name: client
+  - port: 2888
+    protocol: TCP
+    targetPort: 2888
+    name: leader
+  - port: 3888
+    protocol: TCP
+    targetPort: 3888
+    name: leader-election
+  selector:
+    app: zk-n2
+  sessionAffinity: None
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zk-n3
+  name: zk-n3
+  namespace: default
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    targetPort: 2181
+    nodePort: 30203
+    name: client
+  - port: 2888
+    protocol: TCP
+    targetPort: 2888
+    name: leader
+  - port: 3888
+    protocol: TCP
+    targetPort: 3888
+    name: leader-election
+  selector:
+    app: zk-n3
+  sessionAffinity: None
+  type: NodePort
+

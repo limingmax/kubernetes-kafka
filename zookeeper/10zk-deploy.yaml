@@ -1,0 +1,149 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: zk-n1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zk-n1
+  template:
+    metadata:
+      labels:
+        app: zk-n1
+    spec:
+      hostname: zk-n1
+      volumes:
+        - name: zk-data
+          hostPath: 
+            path: /data/zk-cluster/zk-data-n1
+        - name: zk-logs
+          hostPath: 
+            path: /data/zk-cluster/zk-logs-n1
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: zk-n1
+        image: zookeeper:3.4.10
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: zk-data
+          readOnly: false
+          mountPath: "/data/zk-data"
+        - name: zk-logs
+          readOnly: false
+          mountPath: "/data/zk-logs"
+        ports:
+        - containerPort: 2181
+        - containerPort: 2888
+        - containerPort: 3888
+        #command: ['tail', '-f', '/etc/hosts']  
+        env:
+        - name: ZOO_MY_ID
+          value: "1"
+        - name: ZOO_SERVERS
+          value: server.1=zk-n1:2888:3888 server.2=zk-n2:2888:3888 server.3=zk-n3:2888:3888
+        - name: ZOO_DATA_DIR
+          value: '/data/zk-data'
+        - name: ZOO_DATA_LOG_DIR
+          value: '/data/zk-logs'  
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: zk-n2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zk-n2
+  template:
+    metadata:
+      labels:
+        app: zk-n2
+    spec:
+      hostname: zk-n2
+      volumes:
+        - name: zk-data
+          hostPath: 
+            path: /data/zk-cluster/zk-data-n2
+        - name: zk-logs
+          hostPath: 
+            path: /data/zk-cluster/zk-logs-n2
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: zk-n2
+        image: zookeeper:3.4.10
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: zk-data
+          readOnly: false
+          mountPath: "/data/zk-data"
+        - name: zk-logs
+          readOnly: false
+          mountPath: "/data/zk-logs"
+        ports:
+        - containerPort: 2181
+        - containerPort: 2888
+        - containerPort: 3888
+        #command: ['tail', '-f', '/etc/hosts']  
+        env:
+        - name: ZOO_MY_ID
+          value: "2"
+        - name: ZOO_SERVERS
+          value: server.1=zk-n1:2888:3888 server.2=zk-n2:2888:3888 server.3=zk-n3:2888:3888
+        - name: ZOO_DATA_DIR
+          value: '/data/zk-data'
+        - name: ZOO_DATA_LOG_DIR
+          value: '/data/zk-logs'  
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: zk-n3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zk-n3
+  template:
+    metadata:
+      labels:
+        app: zk-n3
+    spec:
+      hostname: zk-n3
+      volumes:
+        - name: zk-data
+          hostPath: 
+            path: /data/zk-cluster/zk-data-n3
+        - name: zk-logs
+          hostPath: 
+            path: /data/zk-cluster/zk-logs-n3
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: zk-n3
+        image: zookeeper:3.4.10
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: zk-data
+          readOnly: false
+          mountPath: "/data/zk-data"
+        - name: zk-logs
+          readOnly: false
+          mountPath: "/data/zk-logs"
+        ports:
+        - containerPort: 2181
+        - containerPort: 2888
+        - containerPort: 3888
+        #command: ['tail', '-f', '/etc/hosts']  
+        env:
+        - name: ZOO_MY_ID
+          value: "3"
+        - name: ZOO_SERVERS
+          value: server.1=zk-n1:2888:3888 server.2=zk-n2:2888:3888 server.3=zk-n3:2888:3888
+        - name: ZOO_DATA_DIR
+          value: '/data/zk-data'
+        - name: ZOO_DATA_LOG_DIR
+          value: '/data/zk-logs' 
